@@ -146,7 +146,7 @@ class sndfile:
           PyaudioIOError is launched."""
         try:
             st = self._sndfile.seek(offset, whence, mode)
-        except IOError, e:
+        except IOError as e:
             raise PyaudioIOError(str(e))
         return st
 
@@ -241,15 +241,12 @@ class sndfile:
         return self._sndfile.__str__()
 
 def supported_format():
-    raise RuntimeError, \
-          "This function is broken. Please see " \
-          "audiolab.available_file_formats"
+    raise RuntimeError("This function is broken. Please see " \
+          "audiolab.available_file_formats")
 
 def supported_endianness():
-    raise RuntimeError, \
-          "This function is broken - and does not even make sense."
+    raise RuntimeError("This function is broken - and does not even make sense.")
 
 def supported_encoding():
-    raise RuntimeError, \
-          "This function is broken. Please see " \
-          "audiolab.available_encodings"
+    raise RuntimeError("This function is broken. Please see " \
+          "audiolab.available_encodings")

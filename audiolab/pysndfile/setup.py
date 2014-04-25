@@ -2,7 +2,7 @@ import os
 import sys
 
 from numpy.distutils.core import setup, Extension
-from setuphelp import info_factory, NotFoundError
+from .setuphelp import info_factory, NotFoundError
 
 SNDFILE_MAJ_VERSION = 1
 

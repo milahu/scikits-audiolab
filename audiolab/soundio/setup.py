@@ -5,7 +5,7 @@ from os.path import join
 import os
 import warnings
 
-from setuphelp import info_factory, NotFoundError
+from .setuphelp import info_factory, NotFoundError
 
 def configuration(parent_package='', top_path=None, package_name='soundio'):
     from numpy.distutils.misc_util import Configuration

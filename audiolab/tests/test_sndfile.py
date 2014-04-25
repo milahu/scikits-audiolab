@@ -10,7 +10,7 @@ import numpy as np
 
 from audiolab import Sndfile, Format, available_encodings, available_file_formats
 
-from testcommon import open_tmp_file, close_tmp_file, TEST_DATA_DIR
+from .testcommon import open_tmp_file, close_tmp_file, TEST_DATA_DIR
 
 _DTYPE_TO_ENC = {np.float64 : 'float64', np.float32: 'float32', 
                  np.int32: 'pcm32', np.int16: 'pcm16'}
@@ -174,7 +174,7 @@ class TestSndfile(TestCase):
                 b = Sndfile(fd, 'w', format, channels=22000, samplerate=1)
                 raise AssertionError("Try to open a file with more than 256 "\
                                      "channels, this should not succeed !")
-            except ValueError, e:
+            except ValueError as e:
                 pass
 
         finally:
@@ -187,9 +187,8 @@ class TestSndfile(TestCase):
         try:
             try:
                 a.seek(2 ** 60)
-                raise Exception, \
-                      "Seek really succeded ! This should not happen"
-            except IOError, e:
+                raise Exception("Seek really succeded ! This should not happen")
+            except IOError as e:
                 pass
         finally:
             a.close()
@@ -219,7 +218,7 @@ class TestSndfile(TestCase):
             raise AssertionError("call to non existing file should not succeed")
         except IOError:
             pass
-        except Exception, e:
+        except Exception as e:
             raise AssertionError("opening non existing file should raise" \
                                  " a IOError exception, got %s instead" %
                                  e.__class__)
@@ -292,7 +291,7 @@ class TestSeek(TestCase):
             tbuff1 = test.read_frames(n, dtype = np.int16)
             try:
                 tbuff2 = test.read_frames(n, dtype = np.int16)
-            except IOError, e:
+            except IOError as e:
                 msg = "write pointer was updated in read seek !"
                 msg += "\n(msg is %s)" % e
                 raise AssertionError(msg)
@@ -317,7 +316,7 @@ class TestSeek(TestCase):
 
             try:
                 tbuff3 = test.read_frames(n, np.int16)
-            except IOError, e:
+            except IOError as e:
                 msg = "read pointer was updated in write seek !"
                 msg += "\n(msg is %s)" % e
                 raise AssertionError(msg)

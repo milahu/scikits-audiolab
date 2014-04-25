@@ -1,7 +1,7 @@
 from audiolab import formatinfo as format
 
 f = format('aiff', 'ulaw')
-print f
+print(f)
 
 f = format('ircam', 'float32')
-print f
+print(f)
