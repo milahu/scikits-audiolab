@@ -1,6 +1,7 @@
 # cython: embedsignature=True
 
 import numpy as np
+import os
 import warnings
 import copy
 
@@ -425,6 +426,9 @@ cdef class Sndfile:
         self.fd = -1
 
         self.hdl = NULL
+
+        # Encode filename
+        filename = os.fsencode(filename)
 
         # Check the mode is one of the expected values
         if mode == 'r':
