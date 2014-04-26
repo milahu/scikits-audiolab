@@ -22,7 +22,7 @@ COPYING.txt for details.  """
 from .version import version as _version
 __version__ = _version
 
-from .pysndfile import formatinfo, sndfile
+from audiolab.pysndfile import formatinfo, sndfile
 from .pysndfile import supported_format, supported_endianness, \
                       supported_encoding, PyaudioException, \
                       PyaudioIOError
