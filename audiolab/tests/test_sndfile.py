@@ -111,7 +111,7 @@ class TestSndfile(TestCase):
             # the same
             a = Sndfile(ofilename, 'r')
             b = Sndfile(cfilename, 'r')
-            for i in range(nframes / nbuff):
+            for i in range(nframes // nbuff):
                 tmpa = a.read_frames(nbuff, dtype=dtype)
                 tmpb = b.read_frames(nbuff, dtype=dtype)
                 assert_array_equal(tmpa, tmpb)
