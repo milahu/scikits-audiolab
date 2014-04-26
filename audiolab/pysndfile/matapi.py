@@ -21,7 +21,7 @@
 
 import numpy as np
 
-from _sndfile import Format, Sndfile, available_file_formats, \
+from audiolab.pysndfile._sndfile import Format, Sndfile, available_file_formats, \
                      available_encodings, sndfile_version
 
 __all__ = []
