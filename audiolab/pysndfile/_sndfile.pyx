@@ -480,7 +480,9 @@ cdef class Sndfile:
                 msg = "error while opening file %s\n\t-> " % self.filename
             else:
                 msg = "error while opening file descriptor %d\n\t->" % self.fd
-            msg += sf_strerror(self.hdl)
+            # libsndfile doesn't specify the encoding for this, so I've
+            # deliberately used the most conservative encoding
+            msg += sf_strerror(self.hdl).decode('ascii')
             if not self.fd == -1:
                 msg += """
 (Check that the mode argument passed to sndfile is the same as the one used
@@ -491,8 +493,8 @@ broken)"""
             raise IOError("error while opening %s\n\t->%s" % (filename, msg))
 
         if mode == 'r':
-            type, enc, endian = int_to_format(self._sfinfo.format)
-            self._format = Format(type, enc, endian)
+            the_type, enc, endian = int_to_format(self._sfinfo.format)
+            self._format = Format(the_type, enc, endian)
         else:
             self._format = format
 
@@ -820,7 +822,7 @@ broken)"""
 
         if st == -1:
             msg = "Error while seeking, libsndfile error is %s" \
-                  % sf_strerror(self.hdl)
+                  % sf_strerror(self.hdl).decode('ascii')
             raise IOError(msg)
         return st
 
