@@ -17,7 +17,7 @@ cdef extern from "sndfile.h":
     ctypedef SF_FORMAT_INFO SF_FORMAT_INFO
 
 cdef extern from "Python.h":
-    object PyString_FromStringAndSize(char *v, int len)
+    object PyUnicode_FromStringAndSize(char *v, int len)
 
 # format equivalence: dic used to create internally
 # the right enum values from user friendly strings
@@ -112,7 +112,7 @@ def sndfile_version():
     if st < 1:
         raise RuntimeError("Error while getting version of libsndfile")
 
-    ver = PyString_FromStringAndSize(buff, stdlib.strlen(buff))
+    ver = PyUnicode_FromStringAndSize(buff, stdlib.strlen(buff))
 
     # Get major, minor and micro from version
     # Template: libsndfile-X.X.XpreX with preX being optional
@@ -212,7 +212,7 @@ cdef class Format:
                     "%d, " % format_info.format + "please report this" \
                     "problem to the maintainer")
 
-        self._format_str = PyString_FromStringAndSize(format_info.name,
+        self._format_str = PyUnicode_FromStringAndSize(format_info.name,
                                              stdlib.strlen(format_info.name))
 
         # Get the sndfile string description of the encoding type
@@ -224,7 +224,7 @@ cdef class Format:
                     "%d, " % format_info.format + "please report this" \
                     "problem to the maintainer")
 
-        self._encoding_str = PyString_FromStringAndSize(format_info.name,
+        self._encoding_str = PyUnicode_FromStringAndSize(format_info.name,
                                              stdlib.strlen(format_info.name))
 
         self._format_raw_int = format
