@@ -5,7 +5,7 @@ import warnings
 import copy
 
 cimport numpy as cnp
-cimport stdlib
+from libc.string cimport strlen
 from sndfile cimport *
 cimport sndfile as csndfile
 
@@ -112,7 +112,7 @@ def sndfile_version():
     if st < 1:
         raise RuntimeError("Error while getting version of libsndfile")
 
-    ver = PyUnicode_FromStringAndSize(buff, stdlib.strlen(buff))
+    ver = PyUnicode_FromStringAndSize(buff, strlen(buff))
 
     # Get major, minor and micro from version
     # Template: libsndfile-X.X.XpreX with preX being optional
@@ -213,7 +213,7 @@ cdef class Format:
                     "problem to the maintainer")
 
         self._format_str = PyUnicode_FromStringAndSize(format_info.name,
-                                             stdlib.strlen(format_info.name))
+                                             strlen(format_info.name))
 
         # Get the sndfile string description of the encoding type
         format_info.format = cencoding
@@ -225,7 +225,7 @@ cdef class Format:
                     "problem to the maintainer")
 
         self._encoding_str = PyUnicode_FromStringAndSize(format_info.name,
-                                             stdlib.strlen(format_info.name))
+                                             strlen(format_info.name))
 
         self._format_raw_int = format
 
@@ -310,7 +310,7 @@ def available_file_formats():
     ret = []
     for i in _major_formats_int():
         # Handle the case where libsndfile supports a format we don't
-        if not _ENUM_TO_STR_FILE_FORMAT.has_key(i & SF_FORMAT_TYPEMASK):
+        if not (i & SF_FORMAT_TYPEMASK) in _ENUM_TO_STR_FILE_FORMAT:
             warnings.warn("Format %#10x supported by libsndfile but not "
                           "yet supported by audiolab" %
                           (i & SF_FORMAT_TYPEMASK))
@@ -320,13 +320,13 @@ def available_file_formats():
 
 def available_encodings(major):
     """Return lists of available encoding for the given major format."""
-    if not _SNDFILE_FILE_FORMAT.has_key(major):
+    if not major in _SNDFILE_FILE_FORMAT:
         raise ValueError("Unknown file format %s" % major)
 
     ret = []
     for i in _sub_formats_int(_SNDFILE_FILE_FORMAT[major]):
         # Handle the case where libsndfile supports an encoding we don't
-        if not _ENUM_TO_STR_ENCODING.has_key(i & SF_FORMAT_SUBMASK):
+        if not (i & SF_FORMAT_SUBMASK) in _ENUM_TO_STR_ENCODING:
             warnings.warn("Encoding %#10x supported by libsndfile but not "
                           "yet supported by audiolab" %
                           (i & SF_FORMAT_SUBMASK))
