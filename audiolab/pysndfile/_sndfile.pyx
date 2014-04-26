@@ -427,9 +427,6 @@ cdef class Sndfile:
 
         self.hdl = NULL
 
-        # Encode filename
-        filename = os.fsencode(filename)
-
         # Check the mode is one of the expected values
         if mode == 'r':
             sfmode = SFM_READ
@@ -473,7 +470,8 @@ cdef class Sndfile:
             self.fd = filename
             self.filename = ""
         else:
-            self.hdl = sf_open(filename, sfmode, &self._sfinfo)
+            encoded_filename = os.fsencode(filename)
+            self.hdl = sf_open(encoded_filename, sfmode, &self._sfinfo)
             self.filename = filename
         self._mode = sfmode
 
