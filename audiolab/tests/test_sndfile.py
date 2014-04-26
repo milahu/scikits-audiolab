@@ -34,7 +34,7 @@ class TestSndfile(TestCase):
             b = Sndfile(fd, 'w', format, a.channels, a.samplerate)
 
             # Copy the data
-            for i in range(nframes / nbuff):
+            for i in range(nframes // nbuff):
                 tmpa    = a.read_frames(nbuff)
                 assert tmpa.dtype == np.float
                 b.write_frames(tmpa)
@@ -96,7 +96,7 @@ class TestSndfile(TestCase):
             b = Sndfile(fd, 'w', format, a.channels, a.samplerate)
 
             # Copy the data in the wav file
-            for i in range(nframes / nbuff):
+            for i in range(nframes // nbuff):
                 tmpa    = a.read_frames(nbuff, dtype=dtype)
                 assert tmpa.dtype == dtype
                 b.write_frames(tmpa)

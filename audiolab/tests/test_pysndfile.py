@@ -37,7 +37,7 @@ class test_pysndfile(TestCase):
                     a.get_samplerate())
 
             # Copy the data
-            for i in range(nframes / nbuff):
+            for i in range(nframes // nbuff):
                 tmpa = a.read_frames(nbuff)
                 assert tmpa.dtype == np.float
                 b.write_frames(tmpa, nbuff)
@@ -85,7 +85,7 @@ class test_pysndfile(TestCase):
                     a.get_samplerate())
 
             # Copy the data in the wav file
-            for i in range(nframes / nbuff):
+            for i in range(nframes // nbuff):
                 tmpa = a.read_frames(nbuff, dtype = np.float64)
                 assert tmpa.dtype == np.float64
                 b.write_frames(tmpa, nbuff)
@@ -100,7 +100,7 @@ class test_pysndfile(TestCase):
             # the same
             a = sndfile(ofilename, 'read')
             b = sndfile(cfilename, 'read')
-            for i in range(nframes / nbuff):
+            for i in range(nframes // nbuff):
                 tmpa = a.read_frames(nbuff, dtype = np.float64)
                 tmpb = b.read_frames(nbuff, dtype = np.float64)
                 assert_array_equal(tmpa, tmpb)
@@ -129,7 +129,7 @@ class test_pysndfile(TestCase):
                     a.get_samplerate())
 
             # Copy the data in the wav file
-            for i in range(nframes / nbuff):
+            for i in range(nframes // nbuff):
                 tmpa = a.read_frames(nbuff, dtype = np.float32)
                 assert tmpa.dtype == np.float32
                 b.write_frames(tmpa, nbuff)
@@ -144,7 +144,7 @@ class test_pysndfile(TestCase):
             # the same
             a = sndfile(ofilename, 'read')
             b = sndfile(cfilename, 'read')
-            for i in range(nframes / nbuff):
+            for i in range(nframes // nbuff):
                 tmpa = a.read_frames(nbuff, dtype = np.float32)
                 tmpb = b.read_frames(nbuff, dtype = np.float32)
                 assert_array_equal(tmpa, tmpb)
