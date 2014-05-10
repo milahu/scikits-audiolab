@@ -31,7 +31,7 @@
 
 import numpy as np
 cimport numpy as cnp
-cimport stdlib
+cimport libc.stdlib
 cimport python_exc
 from alsa cimport *
 
@@ -45,7 +45,7 @@ cdef extern from "alsa/asoundlib.h":
         int snd_pcm_sw_params_alloca(snd_pcm_sw_params_t **)
 
 cdef extern from "Python.h":
-        object PyString_FromStringAndSize(char *v, int len)
+        object PyUnicode_FromStringAndSize(char *v, int len)
 
 class AlsaException(Exception):
         pass
@@ -68,11 +68,11 @@ def enumerate_devices():
         card = 0
         while(hints[card] != NULL):
                 #name = snd_device_name_get_hint(hints[card], "NAME")
-                #names.append(PyString_FromStringAndSize(name, stdlib.strlen(name)))
+                #names.append(PyUnicode_FromStringAndSize(name, libc.stdlib.strlen(name)))
                 #if name != NULL:
-                #        stdlib.free(name)
-                devices.append(PyString_FromStringAndSize(hints[card], 
-                        stdlib.strlen(hints[card])))
+                #        libc.stdlib.free(name)
+                devices.append(PyUnicode_FromStringAndSize(hints[card], 
+                        libc.stdlib.strlen(hints[card])))
                 card += 1
         snd_device_name_free_hint(<void**>hints)
 
