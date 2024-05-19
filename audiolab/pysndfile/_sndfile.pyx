@@ -9,6 +9,7 @@ cimport numpy as cnp
 from libc.string cimport strlen
 from sndfile cimport *
 cimport sndfile as csndfile
+cimport libc.string as string
 
 cdef extern from "sndfile.h":
     cdef struct SF_FORMAT_INFO:
@@ -16,6 +17,15 @@ cdef extern from "sndfile.h":
         char *name
         char *extension
     ctypedef SF_FORMAT_INFO SF_FORMAT_INFO
+
+# FIXME: Hacky workaround. __quad_t is defined in sndfile.pxd,
+# but the compiler seems to not find it on Macs
+IF UNAME_SYSNAME == "Darwin":
+    cdef extern from *:
+        """
+        typedef long long int __quad_t;
+        """
+        pass
 
 cdef extern from "Python.h":
     object PyUnicode_FromStringAndSize(char *v, int len)
@@ -638,7 +648,7 @@ broken)"""
         elif dtype == np.int16:
             y = self.read_frames_short(nframes)
         else:
-            RuntimeError("Sorry, dtype %s not supported" % str(dtype))
+            raise RuntimeError("Sorry, dtype %s not supported" % str(dtype))
 
         if y.shape[1] == 1:
             return y[:, 0]
@@ -675,7 +685,7 @@ broken)"""
 
         # Use Fortran order to cope with interleaving
         ty = np.empty((nframes, self._sfinfo.channels),
-                      dtype=np.int, order='F')
+                      dtype=np.int32, order='F')
 
         res = sf_readf_int(self.hdl, <int*>ty.data, nframes)
         if not res == nframes:
@@ -740,12 +750,12 @@ broken)"""
             res = self.write_frames_double(input, nframes)
         elif input.dtype == np.float32:
             res = self.write_frames_float(input, nframes)
-        elif input.dtype == np.int:
+        elif input.dtype == np.int32:
             res = self.write_frames_int(input, nframes)
         elif input.dtype == np.short:
             res = self.write_frames_short(input, nframes)
         else:
-            raise Exception("type of input &s not understood" % str(input.dtype))
+            raise Exception("type of input %s not understood" % str(input.dtype))
 
         if not(res == nframes):
             raise IOError("write %d frames, expected to write %d"
