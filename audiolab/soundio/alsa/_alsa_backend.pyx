@@ -131,7 +131,7 @@ cdef class AlsaDevice:
                               "signal has %d channels" % (self.format.nchannels, nc))
 
                 tx = np.empty((nc, bufsize), dtype=np.int16)
-                nr = input.size / nc / bufsize
+                nr = input.size // nc // bufsize
 
                 st = snd_pcm_prepare(self.handle)
                 if st:
