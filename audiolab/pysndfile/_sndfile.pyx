@@ -730,7 +730,7 @@ broken)"""
         # First, get the number of channels and frames from input
         if input.ndim == 2:
             nc = input.shape[1]
-            nframes = input.size / nc
+            nframes = input.size // nc
         elif input.ndim == 1:
             nc = 1
             input = input[:, None]
