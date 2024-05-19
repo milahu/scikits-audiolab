@@ -28,8 +28,7 @@ DOWNLOAD_URL        = URL
 
 MAJOR = 0
 MINOR = 11
-MICRO = 0
-EXTRA = 'p3.1'
+MICRO = 1
 DEV = False
 
 CLASSIFIERS = ['Development Status :: 4 - Beta',
@@ -41,7 +40,7 @@ CLASSIFIERS = ['Development Status :: 4 - Beta',
         'Topic :: Scientific/Engineering']
 
 def build_verstring():
-    return '%d.%d.%d.%s' % (MAJOR, MINOR, MICRO, EXTRA)
+    return '%d.%d.%d' % (MAJOR, MINOR, MICRO)
 
 def build_fverstring():
     if DEV:
