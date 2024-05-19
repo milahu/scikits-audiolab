@@ -34,6 +34,7 @@ cimport numpy as cnp
 cimport libc.stdlib
 from alsa cimport *
 cimport libc.string as string
+cimport cpython
 
 cdef int BUFFER_TIME  = 500000
 cdef int PERIOD_TIME  = 0
