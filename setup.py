@@ -37,8 +37,8 @@ from common import *
 def configuration(parent_package='',top_path=None, package_name=DISTNAME):
     if os.path.exists('MANIFEST'): os.remove('MANIFEST')
 
-    write_info(os.path.join("audiolab", "info.py"))
-    write_version(os.path.join("audiolab", "version.py"))
+    write_info(os.path.join("scikits", "audiolab", "info.py"))
+    write_version(os.path.join("scikits", "audiolab", "version.py"))
     # XXX: find a way to include the doc in sdist
     if os.path.exists(os.path.join("docs", "src")):
         write_version(os.path.join("docs", "src", "audiolab_version.py"))
@@ -60,7 +60,7 @@ def configuration(parent_package='',top_path=None, package_name=DISTNAME):
             quiet=True,
             )
 
-    config.add_subpackage('audiolab')
+    config.add_subpackage(DISTNAME)
 
     return config
 
@@ -70,7 +70,7 @@ if __name__ == "__main__":
           name=DISTNAME,
           cmdclass = {'build_ext': build_ext},
           install_requires=INSTALL_REQUIRE,
-          packages=setuptools.find_packages(),
+          #packages=setuptools.find_namespace_packages(include=[DISTNAME, DISTNAME + ".*"]),
           include_package_data = True,
           test_suite="tester",
           zip_safe=False,
