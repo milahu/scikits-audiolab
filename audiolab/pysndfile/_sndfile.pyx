@@ -7,8 +7,8 @@ import copy
 
 cimport numpy as cnp
 from libc.string cimport strlen
-from sndfile cimport *
-cimport sndfile as csndfile
+from audiolab.pysndfile.sndfile cimport *
+cimport audiolab.pysndfile.sndfile as csndfile
 cimport libc.string as string
 
 cdef extern from "sndfile.h":
