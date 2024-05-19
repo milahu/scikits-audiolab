@@ -10,8 +10,8 @@ if tmp.ndim < 2:
 else:
     nc  = tmp.shape[1]
 
-print "The file has %d frames, %d channel(s)" % (tmp.shape[0], nc)
-print "FS is %f, encoding is %s" % (fs, enc)
+print("The file has %d frames, %d channel(s)" % (tmp.shape[0], nc))
+print("FS is %f, encoding is %s" % (fs, enc))
 
 fd, cfilename   = mkstemp('pysndfiletest.wav')
 try:

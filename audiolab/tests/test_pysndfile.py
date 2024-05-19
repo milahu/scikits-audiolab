@@ -12,7 +12,7 @@ import numpy as np
 from audiolab import PyaudioException, PyaudioIOError
 from audiolab import sndfile, formatinfo as audio_format
 
-from testcommon import open_tmp_file, close_tmp_file, TEST_DATA_DIR
+from .testcommon import open_tmp_file, close_tmp_file, TEST_DATA_DIR
 
 # We filter deprecation warnings here because the features it tests will be
 # deprecated themselves
@@ -37,7 +37,7 @@ class test_pysndfile(TestCase):
                     a.get_samplerate())
 
             # Copy the data
-            for i in range(nframes / nbuff):
+            for i in range(nframes // nbuff):
                 tmpa = a.read_frames(nbuff)
                 assert tmpa.dtype == np.float
                 b.write_frames(tmpa, nbuff)
@@ -85,7 +85,7 @@ class test_pysndfile(TestCase):
                     a.get_samplerate())
 
             # Copy the data in the wav file
-            for i in range(nframes / nbuff):
+            for i in range(nframes // nbuff):
                 tmpa = a.read_frames(nbuff, dtype = np.float64)
                 assert tmpa.dtype == np.float64
                 b.write_frames(tmpa, nbuff)
@@ -100,7 +100,7 @@ class test_pysndfile(TestCase):
             # the same
             a = sndfile(ofilename, 'read')
             b = sndfile(cfilename, 'read')
-            for i in range(nframes / nbuff):
+            for i in range(nframes // nbuff):
                 tmpa = a.read_frames(nbuff, dtype = np.float64)
                 tmpb = b.read_frames(nbuff, dtype = np.float64)
                 assert_array_equal(tmpa, tmpb)
@@ -129,7 +129,7 @@ class test_pysndfile(TestCase):
                     a.get_samplerate())
 
             # Copy the data in the wav file
-            for i in range(nframes / nbuff):
+            for i in range(nframes // nbuff):
                 tmpa = a.read_frames(nbuff, dtype = np.float32)
                 assert tmpa.dtype == np.float32
                 b.write_frames(tmpa, nbuff)
@@ -144,7 +144,7 @@ class test_pysndfile(TestCase):
             # the same
             a = sndfile(ofilename, 'read')
             b = sndfile(cfilename, 'read')
-            for i in range(nframes / nbuff):
+            for i in range(nframes // nbuff):
                 tmpa = a.read_frames(nbuff, dtype = np.float32)
                 tmpb = b.read_frames(nbuff, dtype = np.float32)
                 assert_array_equal(tmpa, tmpb)
@@ -159,15 +159,15 @@ class test_pysndfile(TestCase):
     def test_supported_features(self):
         for i in pysndfile.supported_format():
             msg += str(i) + ', '
-        print msg
+        print(msg)
         msg = "supported encoding format are : "
         for i in pysndfile.supported_encoding():
             msg += str(i) + ', '
-        print msg
+        print(msg)
         msg = "supported endianness are : "
         for i in pysndfile.supported_endianness():
             msg += str(i) + ', '
-        print msg
+        print(msg)
 
     def test_short_io(self):
         # TODO: check if neg or pos value is the highest in abs
@@ -235,7 +235,7 @@ class test_pysndfile(TestCase):
                         format, channels = 22000, samplerate = 1)
                 raise Exception("Try to open a file with more than 256 "\
                         "channels, this should not succeed !")
-            except ValueError, e:
+            except ValueError as e:
                 #print "Gave %d channels, error detected is \"%s\"" % (22000, e)
                 pass
 
@@ -250,7 +250,7 @@ class test_pysndfile(TestCase):
             try:
                 a.seek(2 ** 60)
                 raise Exception("Seek really succeded ! This should not happen")
-            except PyaudioIOError, e:
+            except PyaudioIOError as e:
                 pass
         finally:
             a.close()
@@ -281,7 +281,7 @@ class test_pysndfile(TestCase):
             raise AssertionError("call to non existing file should not succeed")
         except IOError:
             pass
-        except Exception, e:
+        except Exception as e:
             raise AssertionError("opening non existing file should raise a IOError exception, got %s instead" % e.__class__)
 
 class test_seek(TestCase):
@@ -352,7 +352,7 @@ class test_seek(TestCase):
             tbuff1 = test.read_frames(n, dtype = np.int16)
             try:
                 tbuff2 = test.read_frames(n, dtype = np.int16)
-            except IOError, e:
+            except IOError as e:
                 msg = "write pointer was updated in read seek !"
                 msg += "\n(msg is %s)" % e
                 raise AssertionError(msg) 
@@ -377,7 +377,7 @@ class test_seek(TestCase):
 
             try:
                 tbuff3 = test.read_frames(n, np.int16)
-            except IOError, e:
+            except IOError as e:
                 msg = "read pointer was updated in write seek !"
                 msg += "\n(msg is %s)" % e
                 raise AssertionError(msg) 

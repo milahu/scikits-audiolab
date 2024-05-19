@@ -19,22 +19,22 @@ Copyright (C) 2006-2007 Cournapeau David <cournape@gmail.com>
 LICENSE: audiolab is licensed under the LGPL, as is libsndfile itself. See
 COPYING.txt for details.  """
 
-from version import version as _version
+from .version import version as _version
 __version__ = _version
 
-from pysndfile import formatinfo, sndfile
-from pysndfile import supported_format, supported_endianness, \
+from audiolab.pysndfile import formatinfo, sndfile
+from .pysndfile import supported_format, supported_endianness, \
                       supported_encoding, PyaudioException, \
                       PyaudioIOError
-from pysndfile import Sndfile, Format, available_file_formats, \
+from .pysndfile import Sndfile, Format, available_file_formats, \
                       available_encodings, sndfile_version
 __sndfile_version__ = ".".join([str(i) for i in sndfile_version()])
 #from audiolab.matapi import wavread, aiffread, flacread, auread, \
 #        sdifread, wavwrite, aiffwrite, flacwrite, auwrite, sdifwrite
-from pysndfile.matapi import *
+from .pysndfile.matapi import *
 
-from soundio import play
-__all__ = filter(lambda s:not s.startswith('_'),dir())
+from .soundio import play
+__all__ = [s for s in dir() if not s.startswith('_')]
 
 from numpy.testing import Tester
 

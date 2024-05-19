@@ -1,11 +1,12 @@
 # cython: embedsignature=True
 
 import numpy as np
+import os
 import warnings
 import copy
 
 cimport numpy as cnp
-cimport stdlib
+from libc.string cimport strlen
 from sndfile cimport *
 cimport sndfile as csndfile
 
@@ -17,7 +18,7 @@ cdef extern from "sndfile.h":
     ctypedef SF_FORMAT_INFO SF_FORMAT_INFO
 
 cdef extern from "Python.h":
-    object PyString_FromStringAndSize(char *v, int len)
+    object PyUnicode_FromStringAndSize(char *v, int len)
 
 # format equivalence: dic used to create internally
 # the right enum values from user friendly strings
@@ -112,7 +113,7 @@ def sndfile_version():
     if st < 1:
         raise RuntimeError("Error while getting version of libsndfile")
 
-    ver = PyString_FromStringAndSize(buff, stdlib.strlen(buff))
+    ver = PyUnicode_FromStringAndSize(buff, strlen(buff))
 
     # Get major, minor and micro from version
     # Template: libsndfile-X.X.XpreX with preX being optional
@@ -212,8 +213,8 @@ cdef class Format:
                     "%d, " % format_info.format + "please report this" \
                     "problem to the maintainer")
 
-        self._format_str = PyString_FromStringAndSize(format_info.name,
-                                             stdlib.strlen(format_info.name))
+        self._format_str = PyUnicode_FromStringAndSize(format_info.name,
+                                             strlen(format_info.name))
 
         # Get the sndfile string description of the encoding type
         format_info.format = cencoding
@@ -224,8 +225,8 @@ cdef class Format:
                     "%d, " % format_info.format + "please report this" \
                     "problem to the maintainer")
 
-        self._encoding_str = PyString_FromStringAndSize(format_info.name,
-                                             stdlib.strlen(format_info.name))
+        self._encoding_str = PyUnicode_FromStringAndSize(format_info.name,
+                                             strlen(format_info.name))
 
         self._format_raw_int = format
 
@@ -310,7 +311,7 @@ def available_file_formats():
     ret = []
     for i in _major_formats_int():
         # Handle the case where libsndfile supports a format we don't
-        if not _ENUM_TO_STR_FILE_FORMAT.has_key(i & SF_FORMAT_TYPEMASK):
+        if not (i & SF_FORMAT_TYPEMASK) in _ENUM_TO_STR_FILE_FORMAT:
             warnings.warn("Format %#10x supported by libsndfile but not "
                           "yet supported by audiolab" %
                           (i & SF_FORMAT_TYPEMASK))
@@ -320,13 +321,13 @@ def available_file_formats():
 
 def available_encodings(major):
     """Return lists of available encoding for the given major format."""
-    if not _SNDFILE_FILE_FORMAT.has_key(major):
+    if not major in _SNDFILE_FILE_FORMAT:
         raise ValueError("Unknown file format %s" % major)
 
     ret = []
     for i in _sub_formats_int(_SNDFILE_FILE_FORMAT[major]):
         # Handle the case where libsndfile supports an encoding we don't
-        if not _ENUM_TO_STR_ENCODING.has_key(i & SF_FORMAT_SUBMASK):
+        if not (i & SF_FORMAT_SUBMASK) in _ENUM_TO_STR_ENCODING:
             warnings.warn("Encoding %#10x supported by libsndfile but not "
                           "yet supported by audiolab" %
                           (i & SF_FORMAT_SUBMASK))
@@ -469,7 +470,8 @@ cdef class Sndfile:
             self.fd = filename
             self.filename = ""
         else:
-            self.hdl = sf_open(filename, sfmode, &self._sfinfo)
+            encoded_filename = os.fsencode(filename)
+            self.hdl = sf_open(encoded_filename, sfmode, &self._sfinfo)
             self.filename = filename
         self._mode = sfmode
 
@@ -478,7 +480,9 @@ cdef class Sndfile:
                 msg = "error while opening file %s\n\t-> " % self.filename
             else:
                 msg = "error while opening file descriptor %d\n\t->" % self.fd
-            msg += sf_strerror(self.hdl)
+            # libsndfile doesn't specify the encoding for this, so I've
+            # deliberately used the most conservative encoding
+            msg += sf_strerror(self.hdl).decode('ascii')
             if not self.fd == -1:
                 msg += """
 (Check that the mode argument passed to sndfile is the same as the one used
@@ -489,8 +493,8 @@ broken)"""
             raise IOError("error while opening %s\n\t->%s" % (filename, msg))
 
         if mode == 'r':
-            type, enc, endian = int_to_format(self._sfinfo.format)
-            self._format = Format(type, enc, endian)
+            the_type, enc, endian = int_to_format(self._sfinfo.format)
+            self._format = Format(the_type, enc, endian)
         else:
             self._format = format
 
@@ -818,7 +822,7 @@ broken)"""
 
         if st == -1:
             msg = "Error while seeking, libsndfile error is %s" \
-                  % sf_strerror(self.hdl)
+                  % sf_strerror(self.hdl).decode('ascii')
             raise IOError(msg)
         return st
 

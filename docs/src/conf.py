@@ -50,8 +50,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'audiolab'
-copyright = u'2008, David Cournapeau'
+project = 'audiolab'
+copyright = '2008, David Cournapeau'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -181,8 +181,8 @@ htmlhelp_basename = 'audiolabdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, document class [howto/manual]).
 latex_documents = [
-  ('index', 'audiolab.tex', ur'audiolab Documentation',
-   ur'David Cournapeau', 'manual'),
+  ('index', 'audiolab.tex', r'audiolab Documentation',
+   r'David Cournapeau', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

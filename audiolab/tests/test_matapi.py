@@ -15,7 +15,7 @@ from audiolab import PyaudioException
 from audiolab import Sndfile, Format as audio_format
 from audiolab import available_file_formats
 
-from testcommon import open_tmp_file, close_tmp_file
+from .testcommon import open_tmp_file, close_tmp_file
 
 AVAILABLE_FORMATS = available_file_formats()
 
@@ -96,7 +96,7 @@ class test_audiolab(TestCase):
             try:
                 rnoise  = wavread(cfilename)[0]
                 raise Exception("wavread on non wav file succeded, expected to fail")
-            except ValueError, e:
+            except ValueError as e:
                 pass
                 #print str(e) + ", as expected"
 

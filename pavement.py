@@ -13,7 +13,7 @@ try:
     from paver.tasks import VERSION as _PVER
     if not _PVER >= '1.0':
         raise RuntimeError("paver version >= 1.0 required (was %s)" % _PVER)
-except ImportError, e:
+except ImportError as e:
     raise RuntimeError("paver version >= 1.0 required")
 
 import paver
@@ -58,7 +58,7 @@ def bootstrap(options):
     """create virtualenv in ./bootstrap"""
     try:
         import virtualenv
-    except ImportError, e:
+    except ImportError as e:
         raise RuntimeError("virtualenv is needed for bootstrap")
 
     bdir = options.bootstrap_dir
@@ -70,7 +70,7 @@ def bootstrap(options):
                                                   bscript)
     options.virtualenv.no_site_packages = True
     options.bootstrap.no_site_packages = True
-    print options.virtualenv.script_name
+    print(options.virtualenv.script_name)
     call_task('paver.virtual.bootstrap')
     sh('cd %s; %s %s' % (bdir, sys.executable, bscript))
 
