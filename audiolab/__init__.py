@@ -36,7 +36,8 @@ from .pysndfile.matapi import *
 from .soundio import play
 __all__ = [s for s in dir() if not s.startswith('_')]
 
-from numpy.testing import Tester
-
-test = Tester().test
-bench = Tester().bench
+# FIXME numpy.testing.Tester was removed
+# https://github.com/PyMesh/PyMesh/issues/353
+# from numpy.testing import Tester
+# test = Tester().test
+# bench = Tester().bench
