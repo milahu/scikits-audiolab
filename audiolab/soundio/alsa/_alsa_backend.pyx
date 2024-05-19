@@ -68,11 +68,11 @@ def enumerate_devices():
         card = 0
         while(hints[card] != NULL):
                 #name = snd_device_name_get_hint(hints[card], "NAME")
-                #names.append(PyUnicode_FromStringAndSize(name, libc.stdlib.strlen(name)))
+                #names.append(PyUnicode_FromStringAndSize(name, string.strlen(name)))
                 #if name != NULL:
                 #        libc.stdlib.free(name)
                 devices.append(PyUnicode_FromStringAndSize(hints[card], 
-                        libc.stdlib.strlen(hints[card])))
+                        string.strlen(hints[card])))
                 card += 1
         snd_device_name_free_hint(<void**>hints)
 
