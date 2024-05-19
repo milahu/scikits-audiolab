@@ -108,7 +108,7 @@ cdef class AlsaDevice:
                         raise AlsaException("Fail opening 'default'")
 
                 set_hw_params(self.handle, self.format, &psize, &bsize)
-                print "Period size is", psize, ", Buffer size is", bsize
+                print("Period size is", psize, ", Buffer size is", bsize)
 
                 set_sw_params(self.handle, psize, bsize)
 
@@ -152,7 +152,7 @@ cdef class AlsaDevice:
                                 raise AlsaException("Error in writei")
 
                 if err:
-                        print "Got SIGINT: draining the pcm device... "
+                        print("Got SIGINT: draining the pcm device... ")
                         snd_pcm_drain(self.handle)
                         return -1
                 snd_pcm_drain(self.handle)
