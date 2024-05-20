@@ -85,6 +85,8 @@ _SNDFILE_FILE_FORMAT = {
     'sd2'   : SF_FORMAT_SD2,
 }
 
+# based on libsndfile/include/sndfile.h
+
 # XXX: this is ugly, but I have not found a better way. Since those are
 # relatively recent and not available on all sndfile available, harcode the
 # values to avoid breaking compilation older sndfile.
@@ -96,6 +98,7 @@ _SNDFILE_FILE_FORMAT['wve']     = 0x190000
 _SNDFILE_FILE_FORMAT['ogg']     = 0x200000
 _SNDFILE_FILE_FORMAT['mpc2k']   = 0x210000
 _SNDFILE_FILE_FORMAT['rf64']    = 0x220000
+_SNDFILE_FILE_FORMAT['mpeg']    = 0x230000
 
 
 _SNDFILE_ENDIAN = {
