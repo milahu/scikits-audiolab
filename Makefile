@@ -7,7 +7,7 @@
 # TODO: not fake dependencies....
 
 PYVER		= 2.5
-PKG_VER		= 0.11.2
+PKG_VER		= 0.11.3
 
 BASEPATH	= $(PWD)
 DATAPATH	= $(PWD)/scikits/audiolab/test_data/

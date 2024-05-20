@@ -28,7 +28,7 @@ DOWNLOAD_URL        = URL
 
 MAJOR = 0
 MINOR = 11
-MICRO = 2
+MICRO = 3
 DEV = False
 
 CLASSIFIERS = ['Development Status :: 4 - Beta',
