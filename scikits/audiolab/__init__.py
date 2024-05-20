@@ -22,14 +22,14 @@ COPYING.txt for details.  """
 from .version import version as _version
 __version__ = _version
 
-from audiolab.pysndfile import formatinfo, sndfile
+from .pysndfile import formatinfo, sndfile
 from .pysndfile import supported_format, supported_endianness, \
                       supported_encoding, PyaudioException, \
                       PyaudioIOError
 from .pysndfile import Sndfile, Format, available_file_formats, \
                       available_encodings, sndfile_version
 __sndfile_version__ = ".".join([str(i) for i in sndfile_version()])
-#from audiolab.matapi import wavread, aiffread, flacread, auread, \
+#from .matapi import wavread, aiffread, flacread, auread, \
 #        sdifread, wavwrite, aiffwrite, flacwrite, auwrite, sdifwrite
 from .pysndfile.matapi import *
 

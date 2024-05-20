@@ -3,7 +3,7 @@ import copy
 
 import numpy as np
 
-from audiolab.pysndfile._sndfile import Format, Sndfile, available_file_formats, available_encodings
+from ._sndfile import Format, Sndfile, available_file_formats, available_encodings
 
 #+++++++++++++++++
 # Public exception
